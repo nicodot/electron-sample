@@ -17,4 +17,30 @@ app.on('ready', function() {
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
+
+  var Menu = require('menu');
+  var Tray = require('tray');
+  var nativeImage = require('native-image');
+
+  var trayIcon = new Tray(nativeImage.createFromPath(__dirname + '/icon.png'));
+
+  var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'show', click: function () {
+        mainWindow.show(); }
+    },
+    {
+      label: 'hide', click: function () {
+        mainWindow.hide();
+      }
+    }
+  ]);
+  trayIcon.setContextMenu(contextMenu);
+
+  trayIcon.setToolTip(app.getName());
+
+  trayIcon.on('clicked', function () {
+    mainWindow.focus();
+  });
+
 });
